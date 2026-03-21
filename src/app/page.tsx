@@ -1,118 +1,365 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { CONTENT, ADVANTAGES, PRODUCTS } from "@/lib/main-mock-data"
+import { motion, useInView } from "framer-motion"
+import Link from "next/link"
+import { useRef, useEffect, useState } from "react"
+import {
+  Factory, ShieldCheck, TrendingDown, Truck,
+  Hammer, Wrench, Home, Zap, ChevronDown,
+} from "lucide-react"
+
+// ─── Nail SVG shape ──────────────────────────────────────────────────────────
+
+function NailSVG({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width="14"
+      height="56"
+      viewBox="0 0 14 56"
+      fill="currentColor"
+    >
+      {/* head */}
+      <rect x="0" y="0" width="14" height="7" rx="2" />
+      {/* shaft */}
+      <rect x="6" y="7" width="2" height="42" />
+      {/* tip */}
+      <polygon points="6,49 8,49 7,56" />
+    </svg>
+  )
+}
+
+// ─── Floating nail positions (hardcoded to avoid hydration mismatch) ─────────
+
+const floatingNails = [
+  { x: "8%",  y: "18%", rot: 25,  delay: 0,   dur: 9  },
+  { x: "82%", y: "12%", rot: -15, delay: 1.5, dur: 11 },
+  { x: "22%", y: "72%", rot: 55,  delay: 0.8, dur: 8  },
+  { x: "73%", y: "65%", rot: -40, delay: 2,   dur: 7.5},
+  { x: "48%", y: "22%", rot: 10,  delay: 0.3, dur: 12 },
+  { x: "91%", y: "80%", rot: -60, delay: 0.6, dur: 9  },
+  { x: "4%",  y: "52%", rot: 70,  delay: 1.2, dur: 10 },
+  { x: "38%", y: "87%", rot: -25, delay: 1.8, dur: 8  },
+  { x: "63%", y: "38%", rot: 40,  delay: 0.4, dur: 11 },
+  { x: "17%", y: "42%", rot: -50, delay: 2.3, dur: 9  },
+  { x: "56%", y: "78%", rot: 15,  delay: 1.0, dur: 13 },
+  { x: "76%", y: "28%", rot: -35, delay: 0.7, dur: 10 },
+]
+
+// ─── Animated stat counter ────────────────────────────────────────────────────
+
+function StatCounter({
+  value, suffix, label, delay = 0,
+}: {
+  value: number; suffix: string; label: string; delay?: number
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true })
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!isInView) return
+    const timeout = setTimeout(() => {
+      const duration = 1800
+      const startTime = Date.now()
+      const timer = setInterval(() => {
+        const elapsed = Date.now() - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        const current = Math.floor(eased * value)
+        setCount(current)
+        if (progress >= 1) {
+          setCount(value)
+          clearInterval(timer)
+        }
+      }, 16)
+      return () => clearInterval(timer)
+    }, delay * 1000)
+    return () => clearTimeout(timeout)
+  }, [isInView, value, delay])
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay }}
+      className="text-center"
+    >
+      <div className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tabular-nums leading-none">
+        {count.toLocaleString("ru")}{suffix}
+      </div>
+      <div className="text-emerald-400 mt-3 text-xs uppercase tracking-[0.2em] font-medium">
+        {label}
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Marquee content ──────────────────────────────────────────────────────────
+
+const marqueeItems = [
+  "Гвозди строительные",
+  "Гвозди финишные",
+  "Гвозди кровельные",
+  "Скобы металлические",
+  "Машинные гвозди",
+  "Метизы оптом",
+  "Прямые поставки",
+  "Контроль качества ГОСТ",
+  "Производство в Беларуси",
+  "20 лет опыта",
+]
+
+// ─── Section data ─────────────────────────────────────────────────────────────
+
+const advantages = [
+  { icon: Factory,     title: "От производителя",  desc: "Прямая поставка без посредников — честные цены и надёжный партнёр." },
+  { icon: ShieldCheck, title: "Гарантия качества",  desc: "Стабильное качество каждой партии. Соответствие ГОСТам и международным стандартам." },
+  { icon: TrendingDown,title: "Оптовые цены",       desc: "Выгодные условия для бизнеса, гибкая система скидок при крупных заказах." },
+  { icon: Truck,       title: "Быстрая доставка",   desc: "Доставка по всей России и СНГ. Надёжные логистические партнёры." },
+]
+
+const products = [
+  { icon: Hammer, title: "Гвозди строительные", desc: "Прочные, надёжные, доступны оптом и в розницу для любых строительных задач." },
+  { icon: Wrench, title: "Гвозди финишные",     desc: "Для чистовой отделки. Минимальная шляпка, незаметное крепление." },
+  { icon: Home,   title: "Гвозди кровельные",   desc: "Оцинкованные, устойчивые к коррозии. Идеальны для кровельных работ." },
+  { icon: Zap,    title: "Гвозди специальные",  desc: "Для промышленного применения и специфических задач. Под заказ." },
+]
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.6, delay: i * 0.1 },
+  }),
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col gap-16 sm:gap-20 lg:gap-28">
-      {/* Hero */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16 sm:py-20"
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6">
-            {CONTENT.HERO_TITLE}
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-            {CONTENT.HERO_DESC}
-          </p>
-          <Button
-            size="lg"
-            className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600"
+    <div className="flex flex-col">
+
+      {/* ── Hero ── */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-950 to-gray-900 overflow-hidden">
+        {/* Emerald radial glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(ellipse 80% 50% at 50% 60%, rgba(16,185,129,0.13) 0%, transparent 70%)" }}
+        />
+
+        {/* Floating nail particles */}
+        {floatingNails.map((nail, i) => (
+          <motion.div
+            key={i}
+            className="absolute pointer-events-none text-emerald-400"
+            style={{ left: nail.x, top: nail.y, rotate: nail.rot }}
+            animate={{
+              y:       [0, -22, 0],
+              rotate:  [nail.rot, nail.rot + 12, nail.rot],
+              opacity: [0.07, 0.15, 0.07],
+            }}
+            transition={{ duration: nail.dur, delay: nail.delay, repeat: Infinity, ease: "easeInOut" }}
           >
-            Заказать гвозди
-          </Button>
-        </div>
-      </motion.section>
+            <NailSVG />
+          </motion.div>
+        ))}
 
-      {/* Advantages */}
-      <motion.section
-        id="advantages"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="container mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <h2 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-10 text-center">
-          {CONTENT.ADVANTAGES_TITLE}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {Object.values(ADVANTAGES).map((desc, i) => (
-            <Card key={i} className="shadow-lg p-4 sm:p-6">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">
-                  {["От производителя", "Качество", "Оптовые цены", "Доставка"][i]}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm sm:text-base text-gray-600">{desc}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </motion.section>
+        {/* Main content */}
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-block px-4 py-1.5 rounded-full border border-emerald-500/40 text-emerald-400 text-sm font-medium mb-8 bg-emerald-500/10"
+          >
+            Производитель гвоздей и метизов · Беларусь
+          </motion.span>
 
-      {/* Products */}
-      <motion.section
-        id="products"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="container mx-auto px-4 sm:px-6 lg:px-8"
-      >
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-10 text-center">
-          {CONTENT.PRODUCTS_TITLE}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {Object.values(PRODUCTS).map((product, i) => (
-            <Card
-              key={i}
-              className="hover:shadow-xl transition-shadow p-4 sm:p-6"
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="text-6xl sm:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight mb-6"
+          >
+            ООО<br />
+            <span className="text-emerald-400">«Стальгрит»</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            Производим строительные и промышленные гвозди для оптовых покупателей.
+            Прочная сталь, честные цены и быстрая доставка по всему СНГ.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <Link
+              href="/contacts"
+              className="px-8 py-4 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-base transition-colors"
             >
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">{product}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm sm:text-base text-gray-600">
-                  Прочные, надежные, доступны оптом и в розницу.
-                </p>
-              </CardContent>
-            </Card>
+              Заказать гвозди
+            </Link>
+            <Link
+              href="/about-us"
+              className="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-base border border-white/20 transition-colors backdrop-blur-sm"
+            >
+              О компании
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/40 flex flex-col items-center gap-1"
+        >
+          <span className="text-xs tracking-widest uppercase">Прокрутить</span>
+          <motion.div
+            animate={{ y: [0, 7, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          >
+            <ChevronDown size={20} />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ── Stats ── */}
+      <section className="bg-gray-950 py-24 border-t border-white/5">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6">
+            <StatCounter value={20}    suffix="+"  label="лет на рынке"      delay={0}   />
+            <StatCounter value={500}   suffix="+"  label="клиентов по СНГ"   delay={0.1} />
+            <StatCounter value={10000} suffix="+"  label="тонн продукции в год" delay={0.2} />
+            <StatCounter value={100}   suffix="%"  label="контроль качества" delay={0.3} />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Marquee ── */}
+      <div className="bg-emerald-600 py-3 overflow-hidden">
+        <div className="flex">
+          {[0, 1].map((copy) => (
+            <div
+              key={copy}
+              className="animate-marquee whitespace-nowrap flex items-center gap-0 flex-shrink-0"
+              aria-hidden={copy === 1}
+            >
+              {marqueeItems.map((item, i) => (
+                <span key={i} className="text-white font-semibold text-sm px-6 flex items-center gap-6">
+                  {item}
+                  <span className="text-emerald-300 text-xs">◆</span>
+                </span>
+              ))}
+            </div>
           ))}
         </div>
-      </motion.section>
+      </div>
 
-      {/* CTA */}
-      <motion.section
-        id="contact"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="bg-emerald-50 py-12 sm:py-16 rounded-2xl text-center px-4 sm:px-6 lg:px-8 container mx-auto"
-      >
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
-          {CONTENT.CTA_TITLE}
-        </h2>
-        <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-2xl mx-auto text-gray-700 leading-relaxed">
-          {CONTENT.CTA_DESC}
-        </p>
-        <Button
-          size="lg"
-          className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600"
-        >
-          Связаться с нами
-        </Button>
-      </motion.section>
-    </main>
+      {/* ── Advantages ── */}
+      <section id="advantages" className="bg-white py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.h2
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={0} variants={fadeUp}
+            className="text-4xl sm:text-5xl font-bold text-center mb-16 text-gray-900 tracking-tight"
+          >
+            Почему выбирают нас
+          </motion.h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {advantages.map((item, i) => (
+              <motion.div
+                key={i}
+                initial="hidden" whileInView="visible" viewport={{ once: true }}
+                custom={i + 1} variants={fadeUp}
+                whileHover={{ y: -4 }}
+                className="p-8 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-lg hover:border-emerald-200 transition-all group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:bg-emerald-100 transition-colors">
+                  <item.icon size={22} className="text-emerald-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{item.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Products ── */}
+      <section id="products" className="bg-gray-50 py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.h2
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={0} variants={fadeUp}
+            className="text-4xl sm:text-5xl font-bold text-center mb-16 text-gray-900 tracking-tight"
+          >
+            Наша продукция
+          </motion.h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {products.map((item, i) => (
+              <motion.div
+                key={i}
+                initial="hidden" whileInView="visible" viewport={{ once: true }}
+                custom={i + 1} variants={fadeUp}
+                className="p-8 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex gap-6 items-start"
+              >
+                <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                  <item.icon size={22} className="text-emerald-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section id="contact" className="bg-gray-950 py-32">
+        <div className="container mx-auto px-4 text-center">
+          <motion.h2
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={0} variants={fadeUp}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-6"
+          >
+            Хотите купить гвозди<br />от производителя?
+          </motion.h2>
+          <motion.p
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={1} variants={fadeUp}
+            className="text-gray-400 text-lg max-w-xl mx-auto mb-10"
+          >
+            Оставьте заявку и получите персональное предложение уже сегодня.
+          </motion.p>
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={2} variants={fadeUp}
+          >
+            <Link
+              href="/contacts"
+              className="inline-block px-10 py-4 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-base transition-colors"
+            >
+              Связаться с нами
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+    </div>
   )
 }
