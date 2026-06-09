@@ -6,10 +6,10 @@ import { ReactNode } from "react"
 export const metadata: Metadata = {
   title: {
     template: "%s | Стальгрит",
-    default: "Стальгрит — гвозди от производителя",
+    default: "Гвозди от производителя оптом — ООО «Стальгрит»",
   },
   description:
-    "ООО «Стальгрит» — белорусский производитель строительных и промышленных гвоздей. Оптовые поставки по России и СНГ. Прямые цены, ГОСТ-качество, быстрая доставка.",
+    "Купить гвозди оптом от белорусского производителя. Доставка по России, Беларуси и Казахстану. Строительные, кровельные, финишные гвозди ГОСТ. Прямые цены.",
   keywords: [
     "гвозди",
     "купить гвозди оптом",
@@ -19,6 +19,15 @@ export const metadata: Metadata = {
     "метизы оптом",
     "Стальгрит",
     "гвозди Речица",
+    "гвозди купить Москва",
+    "гвозди оптом Россия",
+    "гвозди Казахстан",
+    "гвозди Алматы",
+    "метизы оптом Москва",
+    "строительные гвозди СНГ",
+    "гвозди производитель",
+    "гвозди ГОСТ",
+    "оцинкованные гвозди",
   ],
   openGraph: {
     type: "website",
@@ -42,17 +51,18 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "ManufacturingBusiness"],
   name: "ООО «Стальгрит»",
   url: "https://stalgrit.by",
   foundingDate: "2003",
+  areaServed: ["BY", "RU", "KZ"],
   address: {
     "@type": "PostalAddress",
     addressLocality: "Речица",
     addressCountry: "BY",
   },
   description:
-    "Производитель строительных и промышленных гвоздей. Оптовые поставки по России и СНГ.",
+    "Производитель строительных и промышленных гвоздей. Оптовые поставки по России, Беларуси и Казахстану.",
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

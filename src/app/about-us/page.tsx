@@ -31,10 +31,10 @@ function SectionHeading({ children, light = false }: { children: React.ReactNode
     <div className="mb-12">
       <NailDivider count={5} className="mb-5" />
       <motion.h2
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: -20, scale: 0.92 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ type: "spring", stiffness: 350, damping: 28, delay: 0.3 }}
+        transition={{ type: "spring", stiffness: 420, damping: 24, delay: 0.3 }}
         className={`text-4xl lg:text-5xl font-extrabold tracking-tight ${light ? "text-white" : "text-gray-900"}`}
       >
         {children}
@@ -119,10 +119,10 @@ export default function AboutUsPage() {
             {Achievements.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 1.12, rotate: i % 2 === 0 ? -3 : 3 }}
+                initial={{ opacity: 0, scale: 1.18, rotate: i % 2 === 0 ? -5 : 5 }}
                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 380, damping: 22, delay: i * 0.12 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20, delay: i * 0.12 }}
                 whileHover={{ scale: 1.04, rotate: 0 }}
               >
                 <Card className="bg-gradient-to-br from-emerald-400 to-emerald-600 text-white shadow-xl p-6 h-full">

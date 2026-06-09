@@ -30,7 +30,7 @@ export default function NailDivider({
           transition={{
             type: "spring",
             stiffness: 700,
-            damping: 20,
+            damping: 14,
             delay: i * 0.055,
           }}
         >

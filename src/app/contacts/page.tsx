@@ -165,10 +165,11 @@ export default function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 300, damping: 24, delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors"
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/[0.08] transition-colors"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full bg-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500/40 group-hover:rotate-[360deg] transition-all duration-500">
                     <block.icon size={16} className="text-emerald-400" />
                   </div>
                   <span className="text-emerald-400 text-xs uppercase tracking-widest font-semibold">{block.label}</span>
