@@ -71,20 +71,6 @@ export default function Header() {
               {accentLink.label}
             </Link>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 420, damping: 20, delay: 0.42 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <Link
-              href="/contacts"
-              className="px-4 py-2 rounded-full bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors"
-            >
-              Заказать
-            </Link>
-          </motion.div>
         </nav>
 
         {/* Mobile hamburger */}
@@ -156,13 +142,6 @@ export default function Header() {
                 onClick={() => setMenuOpen(false)}
               >
                 Подобрать гвоздь
-              </Link>
-              <Link
-                href="/contacts"
-                className="px-4 py-2 rounded-full bg-emerald-500 text-white text-sm font-semibold hover:bg-emerald-600 transition-colors text-center"
-                onClick={() => setMenuOpen(false)}
-              >
-                Заказать
               </Link>
             </div>
           </motion.div>

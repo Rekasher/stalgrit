@@ -144,3 +144,14 @@
 .preserve-3d {
   transform-style: preserve-3d;
 }
+
+.hero-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
