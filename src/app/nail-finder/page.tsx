@@ -23,36 +23,36 @@ export default function NailFinderPage() {
       <div className="relative z-10 min-h-screen flex flex-col lg:flex-row">
 
         {/* ── LEFT: context panel ─────────────────────────────────────────── */}
-        <div className="lg:w-[38%] lg:min-h-screen lg:sticky lg:top-0 flex flex-col justify-center px-8 lg:px-16 pt-32 pb-10 lg:py-32 border-b lg:border-b-0 lg:border-r border-white/5">
+        <div className="lg:w-[38%] lg:min-h-screen lg:sticky lg:top-0 flex flex-col justify-center px-8 lg:px-16 pt-24 pb-6 lg:py-32 border-b lg:border-b-0 lg:border-r border-white/5">
 
           {/* eyebrow */}
-          <div className="flex items-center gap-3 mb-10">
+          <div className="flex items-center gap-3 mb-6 lg:mb-10">
             <div className="h-px w-8 bg-emerald-500 flex-shrink-0" />
             <span className="font-mono text-[11px] text-emerald-400 tracking-[0.3em] uppercase">Настройщик</span>
           </div>
 
           {/* headline */}
-          <h1 className="mb-6">
+          <h1 className="mb-4 lg:mb-6">
             <span
               className="block text-gray-500 font-light leading-none mb-2"
-              style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}
+              style={{ fontSize: "clamp(1rem, 3vw, 2.5rem)" }}
             >
               Подобрать
             </span>
             <span
               className="block text-white font-black leading-none"
-              style={{ fontSize: "clamp(3.5rem, 9vw, 7rem)" }}
+              style={{ fontSize: "clamp(2rem, 8vw, 7rem)" }}
             >
               гвоздь
             </span>
           </h1>
 
-          <p className="text-gray-500 text-base leading-relaxed max-w-xs mb-12">
+          <p className="hidden lg:block text-gray-500 text-base leading-relaxed max-w-xs mb-12">
             Ответьте на 2–3 вопроса — получите точный тип, размер и покрытие для вашей задачи.
           </p>
 
           {/* mini stats */}
-          <div className="flex gap-10 pt-8 border-t border-white/8">
+          <div className="hidden lg:flex gap-10 pt-8 border-t border-white/8">
             <div>
               <div className="text-2xl font-black text-white leading-none">2–3</div>
               <div className="font-mono text-[9px] text-emerald-400/50 tracking-[0.25em] uppercase mt-2">шага</div>
@@ -69,7 +69,7 @@ export default function NailFinderPage() {
         </div>
 
         {/* ── RIGHT: stepper ──────────────────────────────────────────────── */}
-        <div className="flex-1 flex flex-col justify-center px-8 lg:px-16 py-16 lg:py-32">
+        <div className="flex-1 flex flex-col justify-center px-8 lg:px-16 py-8 lg:py-32">
           <div className="max-w-xl w-full mx-auto lg:mx-0">
             <NailFinder />
           </div>

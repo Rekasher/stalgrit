@@ -105,7 +105,7 @@ export default function ContactPage() {
       {/* ══════════════════════════════════════════════ HERO ══ */}
       <section
         ref={heroRef}
-        className="relative bg-gray-950 min-h-screen flex items-center overflow-hidden"
+        className="relative bg-gray-950 min-h-[85dvh] sm:min-h-screen flex items-center overflow-hidden"
       >
         {/* emerald glow — left-biased */}
         <div
@@ -131,7 +131,7 @@ export default function ContactPage() {
         {heroNails.map((nail, i) => (
           <motion.div
             key={i}
-            className="contacts-hero-nail absolute pointer-events-none text-emerald-400"
+            className={`contacts-hero-nail absolute pointer-events-none text-emerald-400${i >= 3 ? " hidden sm:block" : ""}`}
             style={{ left: nail.x, top: nail.y, rotate: nail.rot }}
             animate={{ y: [0, -16, 0], rotate: [nail.rot, nail.rot + 10, nail.rot], opacity: [0.07, 0.14, 0.07] }}
             transition={{ duration: nail.dur, delay: nail.delay, repeat: Infinity, ease: "easeInOut" }}
@@ -141,7 +141,7 @@ export default function ContactPage() {
         ))}
 
         {/* content — left-aligned */}
-        <div className="relative z-10 w-full container mx-auto px-6 lg:px-20 max-w-6xl pt-32 pb-20">
+        <div className="relative z-10 w-full container mx-auto px-6 lg:px-20 max-w-6xl pt-24 pb-12 sm:pt-32 sm:pb-20">
 
           {/* monospace label */}
           <div className="contacts-hero-fade flex items-center gap-3 mb-10" style={{ opacity: 0 }}>
@@ -154,7 +154,7 @@ export default function ContactPage() {
           {/* headline: mixed weight */}
           <h1 className="mb-10">
             <span className="block text-gray-500 font-light tracking-tight leading-none overflow-hidden pb-2"
-              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+              style={{ fontSize: "clamp(1.2rem, 4vw, 4rem)" }}>
               {"Свяжитесь".split("").map((char, i) => (
                 <span key={i} className="contacts-hero-char inline-block" style={{ transform: "translateY(110%)" }}>
                   {char}
@@ -162,7 +162,7 @@ export default function ContactPage() {
               ))}
             </span>
             <span className="block text-white font-black tracking-tight leading-none overflow-hidden pb-2"
-              style={{ fontSize: "clamp(3.5rem, 12vw, 10rem)" }}>
+              style={{ fontSize: "clamp(2.25rem, 10vw, 10rem)" }}>
               {"с нами".split("").map((char, i) => (
                 <span
                   key={i}
@@ -221,21 +221,50 @@ export default function ContactPage() {
       </section>
 
       {/* ══════════════════════════════════════════ TEAM ══ */}
-      <section className="bg-gray-900 py-28 px-6 lg:px-20 border-t border-white/5">
+      <section className="bg-gray-900 py-12 sm:py-20 lg:py-28 px-6 lg:px-20 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           {/* heading */}
-          <div className="team-reveal mb-14" style={{ opacity: 0 }}>
+          <div className="team-reveal mb-8 sm:mb-12" style={{ opacity: 0 }}>
             <div className="flex items-center gap-4 mb-6">
               <div className="h-px w-10 bg-emerald-500" />
               <span className="font-mono text-[11px] text-emerald-400 tracking-[0.3em] uppercase">Команда</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-none">
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-none">
               Наша команда
             </h2>
           </div>
 
-          {/* Full-bleed photo grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" style={{ gridAutoRows: "360px" }}>
+          {/* Mobile: horizontal scroll carousel */}
+          <div className="sm:hidden flex gap-3 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-none">
+            {employeeMockData.map((emp, i) => (
+              <div
+                key={i}
+                className="emp-card-reveal group relative rounded-2xl overflow-hidden cursor-default flex-shrink-0 snap-center"
+                style={{ opacity: 0, width: "68vw", height: "220px" }}
+              >
+                <Image
+                  src={emp.src}
+                  alt={emp.alt}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="68vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/25 to-transparent" />
+                <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-emerald-500/40 transition-all duration-300 pointer-events-none" />
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-500/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-4 left-4 font-mono text-[10px] text-white/25 tracking-[0.2em]">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="font-mono text-[9px] text-emerald-400 tracking-[0.2em] uppercase mb-1 leading-none">{emp.job}</div>
+                  <h3 className="text-white font-semibold text-base leading-tight">{emp.name}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: grid */}
+          <div className="hidden sm:grid sm:grid-cols-3 lg:grid-cols-3 gap-4" style={{ gridAutoRows: "220px" }}>
             {employeeMockData.map((emp, i) => (
               <div
                 key={i}
@@ -247,32 +276,18 @@ export default function ContactPage() {
                   alt={emp.alt}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="(max-width: 1024px) 33vw, 25vw"
                 />
-
-                {/* gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/25 to-transparent" />
-
-                {/* hover ring */}
                 <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-emerald-500/40 transition-all duration-300 pointer-events-none" />
-
-                {/* emerald top accent */}
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-500/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                {/* index */}
-                <div className="absolute top-5 left-5 font-mono text-[10px] text-white/25 tracking-[0.2em]">
+                <div className="absolute top-4 left-4 font-mono text-[10px] text-white/25 tracking-[0.2em]">
                   {String(i + 1).padStart(2, "0")}
                 </div>
-
-                {/* info */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="font-mono text-[10px] text-emerald-400 tracking-[0.25em] uppercase mb-2 leading-none">
-                    {emp.job}
-                  </div>
-                  <h3 className="text-white font-bold text-lg leading-tight mb-3">{emp.name}</h3>
-
-                  {/* contact — slides up on hover */}
-                  <div className="flex flex-col gap-1.5 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <div className="font-mono text-[10px] text-emerald-400 tracking-[0.25em] uppercase mb-1.5 leading-none">{emp.job}</div>
+                  <h3 className="text-white font-bold text-base leading-tight mb-2">{emp.name}</h3>
+                  <div className="flex flex-col gap-1 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                     <a
                       href={`tel:${emp.phone.replace(/\D/g, "")}`}
                       className="flex items-center gap-2 text-gray-400 hover:text-emerald-400 text-xs transition-colors"
@@ -298,7 +313,7 @@ export default function ContactPage() {
       </section>
 
       {/* ══════════════════════════════════════ ADDRESS ══ */}
-      <section className="bg-gray-950 py-28 px-6 lg:px-20">
+      <section className="bg-gray-950 py-12 sm:py-20 lg:py-28 px-6 lg:px-20">
         <div className="max-w-6xl mx-auto">
           {/* heading */}
           <motion.div
@@ -306,11 +321,11 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="flex items-end justify-between mb-14 pb-6 border-b border-white/8"
+            className="flex items-end justify-between mb-8 sm:mb-12 pb-6 border-b border-white/8"
           >
             <div>
               <span className="font-mono text-[11px] text-emerald-400 tracking-[0.3em] uppercase block mb-3">Реквизиты</span>
-              <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight">Как нас найти</h2>
+              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">Как нас найти</h2>
             </div>
           </motion.div>
 
@@ -319,7 +334,7 @@ export default function ContactPage() {
             {contactBlocks.map((block, i) => (
               <div
                 key={i}
-                className="contact-strip group flex items-start gap-6 sm:gap-12 lg:gap-16 py-10 pl-4 border-l-2 border-transparent hover:border-emerald-500 transition-colors duration-300 cursor-default"
+                className="contact-strip group flex items-start gap-6 sm:gap-12 lg:gap-16 py-7 sm:py-10 pl-4 border-l-2 border-transparent hover:border-emerald-500 transition-colors duration-300 cursor-default"
                 style={{ opacity: 0 }}
               >
                 {/* hover bg */}
@@ -352,7 +367,7 @@ export default function ContactPage() {
                         <a
                           key={j}
                           href={block.links[j]}
-                          className="block text-white text-lg font-semibold hover:text-emerald-400 transition-colors duration-200 leading-snug"
+                          className="block text-white text-base sm:text-lg font-semibold hover:text-emerald-400 transition-colors duration-200 leading-snug"
                         >
                           {line}
                         </a>

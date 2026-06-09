@@ -108,7 +108,7 @@ export default function Carousel3D() {
     >
       {/* ── 3D stage ───────────────────────────────────────────────────────── */}
       <div
-        className="relative w-full h-[500px] flex items-center justify-center overflow-visible cursor-grab active:cursor-grabbing"
+        className="relative w-full h-[420px] sm:h-[500px] flex items-center justify-center overflow-visible cursor-grab active:cursor-grabbing"
         style={{ perspective: "1200px" }}
         onMouseDown={e  => dragStart(e.clientX)}
         onTouchStart={e => dragStart(e.touches[0].clientX)}

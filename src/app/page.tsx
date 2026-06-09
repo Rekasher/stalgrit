@@ -127,7 +127,7 @@ function GsapCounter({ value, suffix, label, delay = 0 }: {
 
   return (
     <div ref={ref} className="text-center" style={{ opacity: 0 }}>
-      <div className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tabular-nums leading-none">
+      <div className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tabular-nums leading-none">
         <span ref={numRef}>0{suffix}</span>
       </div>
       <div className="text-emerald-400 mt-3 text-xs uppercase tracking-[0.2em] font-medium">
@@ -272,7 +272,7 @@ export default function HomePage() {
         {floatingNails.map((nail, i) => (
           <motion.div
             key={i}
-            className="absolute pointer-events-none text-emerald-400 z-[2]"
+            className={`absolute pointer-events-none text-emerald-400 z-[2]${i >= 4 ? " hidden sm:block" : ""}`}
             style={{ left: nail.x, top: nail.y, rotate: nail.rot }}
             animate={{ y: [0, -28, 0], scale: [0.85, 1.15, 0.85], opacity: [0.06, 0.2, 0.06] }}
             transition={{ duration: nail.dur, delay: nail.delay, repeat: Infinity, ease: "easeInOut" }}
@@ -292,7 +292,7 @@ export default function HomePage() {
           </span>
 
           {/* Title split into chars for GSAP */}
-          <h1 className="text-6xl sm:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight mb-6">
+          <h1 className="text-4xl sm:text-7xl lg:text-9xl font-black text-white leading-none tracking-tight mb-6">
             <span className="block overflow-hidden pb-2">
               {"ООО".split("").map((char, i) => (
                 <span
@@ -318,7 +318,7 @@ export default function HomePage() {
           </h1>
 
           <p
-            className="hero-subtitle text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="hero-subtitle text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
             style={{ opacity: 0 }}
           >
             Производим строительные и промышленные гвозди для оптовых покупателей.
@@ -363,9 +363,9 @@ export default function HomePage() {
       </section>
 
       {/* ── Stats ────────────────────────────────────────────────────────────── */}
-      <section className="bg-gray-950 py-24 border-t border-white/5">
+      <section className="bg-gray-950 py-12 sm:py-16 lg:py-24 border-t border-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 lg:gap-6 divide-y sm:divide-y-0 divide-white/5 sm:divide-x sm:divide-white/5">
             <GsapCounter value={20}    suffix="+"  label="лет на рынке"         delay={0}   />
             <GsapCounter value={500}   suffix="+"  label="клиентов по СНГ"      delay={0.1} />
             <GsapCounter value={10000} suffix="+"  label="тонн продукции в год" delay={0.2} />
@@ -395,23 +395,23 @@ export default function HomePage() {
       </div>
 
       {/* ── Advantages (white) ───────────────────────────────────────────────── */}
-      <section id="advantages" className="bg-white py-32">
+      <section id="advantages" className="bg-white py-14 sm:py-24 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.65 }}
-            className="text-4xl sm:text-5xl font-bold text-center mb-16 text-gray-900 tracking-tight"
+            className="text-4xl sm:text-5xl font-bold text-center mb-8 sm:mb-14 text-gray-900 tracking-tight"
           >
             Почему выбирают нас
           </motion.h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pb-3 sm:pb-0 scrollbar-none">
             {advantages.map((item, i) => (
               <div
                 key={i}
-                className="advantage-card p-8 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-xl hover:border-emerald-200 transition-shadow group cursor-default"
+                className="advantage-card flex-shrink-0 snap-center w-[76vw] sm:w-auto p-6 sm:p-8 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-xl hover:border-emerald-200 transition-shadow group cursor-default"
                 style={{ opacity: 0 }}
                 onMouseMove={handleTilt}
                 onMouseLeave={handleTiltEnd}
@@ -433,23 +433,23 @@ export default function HomePage() {
       </section>
 
       {/* ── Products (dark) ──────────────────────────────────────────────────── */}
-      <section id="products" className="bg-gray-950 py-32">
+      <section id="products" className="bg-gray-950 py-14 sm:py-24 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.65 }}
-            className="text-4xl sm:text-5xl font-bold text-center mb-16 text-white tracking-tight"
+            className="text-4xl sm:text-5xl font-bold text-center mb-8 sm:mb-14 text-white tracking-tight"
           >
             Наша продукция
           </motion.h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none sm:grid-cols-2 gap-4 sm:gap-6 pb-3 sm:pb-0 scrollbar-none">
             {products.map((item, i) => (
               <div
                 key={i}
-                className="product-card relative p-8 rounded-2xl bg-gray-900 border border-white/5 hover:border-emerald-500/30 transition-colors overflow-hidden group cursor-default"
+                className="product-card flex-shrink-0 snap-center w-[80vw] sm:w-auto relative p-6 sm:p-8 rounded-2xl bg-gray-900 border border-white/5 hover:border-emerald-500/30 transition-colors overflow-hidden group cursor-default"
                 style={{ opacity: 0 }}
                 onMouseMove={handleTilt}
                 onMouseLeave={handleTiltEnd}
@@ -483,7 +483,7 @@ export default function HomePage() {
       </section>
 
       {/* ── NailFinder Teaser ─────────────────────────────────────────────────── */}
-      <section className="bg-gray-950 py-24 border-t border-white/5">
+      <section className="bg-gray-950 py-12 sm:py-18 border-t border-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-3xl border border-emerald-500/20 bg-emerald-500/5 overflow-hidden px-8 py-12 text-center">
             <div
@@ -498,7 +498,7 @@ export default function HomePage() {
                 Конфигуратор
               </span>
               <h2
-                className="nail-teaser-reveal text-3xl sm:text-4xl font-black text-white tracking-tight mb-4"
+                className="nail-teaser-reveal text-2xl sm:text-4xl font-black text-white tracking-tight mb-4"
                 style={{ opacity: 0 }}
               >
                 Не знаете, какой гвоздь нужен?
@@ -519,7 +519,7 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────────── */}
-      <section id="contact" className="relative bg-gray-950 py-32 overflow-hidden">
+      <section id="contact" className="relative bg-gray-950 py-14 sm:py-24 lg:py-32 overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse 70% 60% at 50% 50%,rgba(16,185,129,0.13) 0%,transparent 70%)" }}
@@ -539,7 +539,7 @@ export default function HomePage() {
 
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h2
-            className="cta-title text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-6"
+            className="cta-title text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight mb-6"
             style={{ opacity: 0 }}
           >
             Хотите купить гвозди<br />от производителя?

@@ -136,19 +136,19 @@ function ResultCard({
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1">{result.name}</h2>
           <p className="text-gray-400 text-sm mb-7">{result.tagline}</p>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {([
-              { label: "Диаметр", value: result.diameter },
-              { label: "Длина",   value: result.length   },
-              { label: "Покрытие", value: result.coating  },
-            ] as const).map(({ label, value }) => (
+              { label: "Диаметр", value: result.diameter, span: false },
+              { label: "Длина",   value: result.length,   span: false },
+              { label: "Покрытие", value: result.coating, span: true  },
+            ] as const).map(({ label, value, span }) => (
               <div
                 key={label}
-                className="rounded-xl border border-white/5 p-4 text-center"
+                className={`rounded-xl border border-white/5 p-4 text-center${span ? " col-span-2" : ""}`}
                 style={{ background: "rgba(255,255,255,0.04)" }}
               >
                 <div className="font-mono text-[9px] text-gray-600 uppercase tracking-[0.2em] mb-1.5">{label}</div>
-                <div className="text-white font-bold text-sm leading-tight">{value}</div>
+                <div className="text-white font-bold text-sm leading-tight break-words">{value}</div>
               </div>
             ))}
           </div>

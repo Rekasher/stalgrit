@@ -87,9 +87,9 @@ function StatBrick({
   }, { scope: ref })
 
   return (
-    <div ref={ref} className="flex flex-col items-center justify-center py-12 px-4 relative group" style={{ opacity: 0 }}>
+    <div ref={ref} className="flex flex-col items-center justify-center py-8 sm:py-12 px-4 relative group" style={{ opacity: 0 }}>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white tabular-nums leading-none tracking-tight">
+      <div className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white tabular-nums leading-none tracking-tight">
         <span ref={numRef}>{typeof value === "string" ? value : `0${suffix ?? ""}`}</span>
       </div>
       <div className="mt-3 text-emerald-400/60 text-[10px] uppercase tracking-[0.3em] font-semibold">{label}</div>
@@ -182,7 +182,7 @@ export default function AboutUsPage() {
       {/* ══════════════════════════════════════════════ HERO ══ */}
       <section
         ref={heroRef}
-        className="relative bg-gray-950 min-h-screen flex items-center overflow-hidden"
+        className="relative bg-gray-950 min-h-[85dvh] sm:min-h-screen flex items-center overflow-hidden"
       >
         {/* emerald glow — left-biased to match left-aligned text */}
         <div
@@ -208,7 +208,7 @@ export default function AboutUsPage() {
         {heroNails.map((nail, i) => (
           <motion.div
             key={i}
-            className="about-hero-nail absolute pointer-events-none text-emerald-400"
+            className={`about-hero-nail absolute pointer-events-none text-emerald-400${i >= 4 ? " hidden sm:block" : ""}`}
             style={{ left: nail.x, top: nail.y, rotate: nail.rot }}
             animate={{ y: [0, -18, 0], rotate: [nail.rot, nail.rot + 10, nail.rot], opacity: [0.07, 0.14, 0.07] }}
             transition={{ duration: nail.dur, delay: nail.delay, repeat: Infinity, ease: "easeInOut" }}
@@ -218,7 +218,7 @@ export default function AboutUsPage() {
         ))}
 
         {/* content — left-aligned */}
-        <div className="relative z-10 w-full container mx-auto px-6 lg:px-20 max-w-6xl pt-32 pb-20">
+        <div className="relative z-10 w-full container mx-auto px-6 lg:px-20 max-w-6xl pt-24 pb-12 sm:pt-32 sm:pb-20">
 
           {/* monospace top label */}
           <div className="about-hero-fade flex items-center gap-3 mb-10" style={{ opacity: 0 }}>
@@ -231,7 +231,7 @@ export default function AboutUsPage() {
           {/* headline: mixed weight, two lines */}
           <h1 className="mb-10">
             <span className="block text-gray-500 font-light tracking-tight leading-none overflow-hidden pb-2"
-              style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+              style={{ fontSize: "clamp(1.2rem, 4vw, 4rem)" }}>
               {"О компании".split("").map((char, i) => (
                 <span key={i} className="about-hero-char inline-block" style={{ transform: "translateY(110%)" }}>
                   {char === " " ? " " : char}
@@ -239,7 +239,7 @@ export default function AboutUsPage() {
               ))}
             </span>
             <span className="block text-white font-black tracking-tight leading-none overflow-hidden pb-2"
-              style={{ fontSize: "clamp(3.5rem, 12vw, 10rem)" }}>
+              style={{ fontSize: "clamp(2.25rem, 10vw, 10rem)" }}>
               {"Стальгрит".split("").map((char, i) => (
                 <span key={i} className="about-hero-char inline-block" style={{ transform: "translateY(110%)" }}>
                   {char}
@@ -288,11 +288,11 @@ export default function AboutUsPage() {
       </section>
 
       {/* ══════════════════════════════════════════ MISSION ══ */}
-      <section className="bg-gray-950 py-32 overflow-hidden">
+      <section className="bg-gray-950 py-14 sm:py-24 lg:py-32 overflow-hidden">
         <div className="container mx-auto px-6 lg:px-20 max-w-6xl">
           <div className="mission-reveal" style={{ opacity: 0 }}>
             {/* eyebrow */}
-            <div className="flex items-center gap-4 mb-14">
+            <div className="flex items-center gap-4 mb-8 sm:mb-12">
               <div className="h-px w-10 bg-emerald-500" />
               <span className="font-mono text-[11px] text-emerald-400 tracking-[0.3em] uppercase">Наша миссия</span>
             </div>
@@ -300,14 +300,14 @@ export default function AboutUsPage() {
             {/* two-column editorial */}
             <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-start">
               <div className="lg:pt-2">
-                <h2 className="text-3xl font-black text-white leading-tight mb-6">
+                <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight mb-6">
                   Зачем<br />мы это<br />делаем
                 </h2>
                 <div className="h-px w-12 bg-emerald-500/40" />
               </div>
               <div>
                 <p className="text-white/65 font-medium leading-relaxed"
-                  style={{ fontSize: "clamp(1.4rem, 2.5vw, 2.2rem)" }}>
+                  style={{ fontSize: "clamp(1rem, 2.5vw, 2.2rem)" }}>
                   {AboutUsInfo.Mission.replace("Наша миссия — ", "")}
                 </p>
               </div>
@@ -317,7 +317,7 @@ export default function AboutUsPage() {
       </section>
 
       {/* ══════════════════════════════════════ ACHIEVEMENTS ══ */}
-      <section className="bg-gray-900 py-24">
+      <section className="bg-gray-900 py-12 sm:py-20">
         <div className="container mx-auto px-6 lg:px-20 max-w-6xl">
           {/* section header */}
           <motion.div
@@ -325,11 +325,11 @@ export default function AboutUsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="flex items-end justify-between mb-14 pb-6 border-b border-white/8"
+            className="flex items-end justify-between mb-8 sm:mb-12 pb-6 border-b border-white/8"
           >
             <div>
               <span className="font-mono text-[11px] text-emerald-400 tracking-[0.3em] uppercase block mb-3">Результаты</span>
-              <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight">Достижения</h2>
+              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">Достижения</h2>
             </div>
             <span className="hidden sm:block text-white/8 font-black text-8xl leading-none tabular-nums select-none">
               0{Achievements.length}
@@ -344,7 +344,7 @@ export default function AboutUsPage() {
               return (
                 <div
                   key={i}
-                  className="achieve-strip group relative flex items-center gap-6 sm:gap-12 lg:gap-16 py-9 pl-4 border-l-2 border-transparent hover:border-emerald-500 transition-colors duration-300 cursor-default"
+                  className="achieve-strip group relative flex items-center gap-6 sm:gap-12 lg:gap-16 py-6 sm:py-9 pl-4 border-l-2 border-transparent hover:border-emerald-500 transition-colors duration-300 cursor-default"
                   style={{ opacity: 0 }}
                 >
                   {/* subtle bg on hover */}
@@ -357,7 +357,7 @@ export default function AboutUsPage() {
 
                   {/* metric */}
                   <div className="flex-shrink-0 w-28 sm:w-36">
-                    <div className="text-4xl sm:text-5xl font-black text-white group-hover:text-emerald-400 transition-colors duration-300 leading-none">
+                    <div className="text-3xl sm:text-5xl font-black text-white group-hover:text-emerald-400 transition-colors duration-300 leading-none">
                       {metric.value}
                     </div>
                     <div className="mt-1 font-mono text-[10px] text-emerald-400/50 tracking-[0.2em] uppercase">
@@ -391,20 +391,20 @@ export default function AboutUsPage() {
       </section>
 
       {/* ══════════════════════════════════════ PRODUCTION ══ */}
-      <section className="bg-white py-32">
+      <section className="bg-white py-14 sm:py-24 lg:py-32">
         <div className="container mx-auto px-6 lg:px-20 max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mb-16"
+            className="mb-8 sm:mb-14"
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-8 bg-emerald-500" />
               <span className="font-mono text-[11px] text-emerald-600 tracking-[0.3em] uppercase">Производство</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight">Как мы работаем</h2>
+            <h2 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight">Как мы работаем</h2>
           </motion.div>
 
           {/* timeline list */}
@@ -419,7 +419,7 @@ export default function AboutUsPage() {
                 return (
                   <div
                     key={i}
-                    className="prod-item flex gap-8 sm:gap-10 py-11 group border-b border-gray-100 last:border-0"
+                    className="prod-item flex gap-8 sm:gap-10 py-8 sm:py-11 group border-b border-gray-100 last:border-0"
                     style={{ opacity: 0 }}
                   >
                     {/* timeline node */}
@@ -461,31 +461,30 @@ export default function AboutUsPage() {
       </section>
 
       {/* ══════════════════════════════════════ CERTIFICATES ══ */}
-      <section className="bg-gray-950 py-32">
+      <section className="bg-gray-950 py-14 sm:py-24 lg:py-32">
         <div className="container mx-auto px-6 lg:px-20 max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="flex items-end justify-between mb-14 pb-6 border-b border-white/8"
+            className="flex items-end justify-between mb-8 sm:mb-12 pb-6 border-b border-white/8"
           >
             <div>
               <span className="font-mono text-[11px] text-emerald-400 tracking-[0.3em] uppercase block mb-3">Признание</span>
-              <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight">Награды</h2>
+              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">Награды</h2>
             </div>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {Certificates.map((cert, i) => (
               <div
                 key={i}
-                className="cert-card group relative rounded-2xl p-7 flex flex-col justify-between overflow-hidden cursor-default transition-colors duration-300"
+                className="cert-card group relative rounded-2xl p-5 sm:p-7 flex flex-col justify-between overflow-hidden cursor-default transition-colors duration-300 h-40 sm:h-[200px] lg:h-[230px]"
                 style={{
                   opacity: 0,
                   background: "rgba(255,255,255,0.03)",
                   border: "1px solid rgba(255,255,255,0.07)",
-                  minHeight: 230,
                 }}
                 onMouseMove={handleTilt}
                 onMouseLeave={handleTiltEnd}
@@ -499,7 +498,7 @@ export default function AboutUsPage() {
 
                 {/* year */}
                 <div className="relative">
-                  <span className="text-6xl font-black text-white leading-none tracking-tight group-hover:text-emerald-400 transition-colors duration-300">
+                  <span className="text-5xl sm:text-6xl font-black text-white leading-none tracking-tight group-hover:text-emerald-400 transition-colors duration-300">
                     {cert.year}
                   </span>
                 </div>
@@ -518,14 +517,14 @@ export default function AboutUsPage() {
       </section>
 
       {/* ══════════════════════════════════════════ TEAM ══ */}
-      <section className="bg-gray-950 py-32 border-t border-white/5">
+      <section className="bg-gray-950 py-14 sm:py-24 lg:py-32 border-t border-white/5">
         <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
-          <div className="team-heading-reveal mb-16" style={{ opacity: 0 }}>
+          <div className="team-heading-reveal mb-8 sm:mb-14" style={{ opacity: 0 }}>
             <div className="flex items-center gap-4 mb-6">
               <div className="h-px w-10 bg-emerald-500" />
               <span className="font-mono text-[11px] text-emerald-400 tracking-[0.3em] uppercase">Команда</span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-none mb-5">
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-none mb-5">
               Люди, которые<br />делают это
             </h2>
             <p className="text-gray-500 max-w-md text-base leading-relaxed">
